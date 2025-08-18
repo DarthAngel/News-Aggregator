@@ -5,14 +5,22 @@
 //  Created by Angel Docampo on 14/8/25.
 //
 
+// NewsService.swift
 import Foundation
 
-class NewsService {
+class NewsService: NewsServiceProtocol {
+    private let apiKey: String
+    private let baseUrl: String
+    private let networkService: NetworkServiceProtocol
     
-    private let apiKey = APIConfig.newsAPIKey
-
-    private let baseUrl = "https://newsapi.org/v2/top-headlines"
-
+    init(apiKey: String = APIConfig.newsAPIKey,
+         baseUrl: String = "https://newsapi.org/v2/top-headlines",
+         networkService: NetworkServiceProtocol = URLSession.shared) {
+        self.apiKey = apiKey
+        self.baseUrl = baseUrl
+        self.networkService = networkService
+    }
+    
     func fetchTopHeadlines(category: String? = nil, query: String? = nil, country: String = "us") async throws -> [Article] {
         guard !apiKey.isEmpty else {
             throw NetworkError.apiKeyMissing
@@ -39,7 +47,7 @@ class NewsService {
         }
 
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await networkService.fetchData(from: url)
 
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {

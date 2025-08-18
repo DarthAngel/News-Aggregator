@@ -29,7 +29,8 @@ class NewsViewModel: ObservableObject {
         errorMessage = nil
         
         do {
-            let fetchedArticles: [Article]
+            
+            var fetchedArticles: [Article]
             
             if let query = query, !query.isEmpty {
                 fetchedArticles = try await newsService.fetchTopHeadlines(query: query)

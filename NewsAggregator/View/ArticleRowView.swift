@@ -22,7 +22,7 @@ struct ArticleRowView: View {
             AsyncImage(url: viewModel.article.urlToImage.flatMap { URL(string: $0) }) { image in
                 image
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
             } placeholder: {
                 Color.gray
             }
