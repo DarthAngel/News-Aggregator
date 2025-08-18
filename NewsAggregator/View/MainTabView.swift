@@ -26,10 +26,7 @@ struct MainTabView: View {
                     Label("Favorites", systemImage: "star.fill")
                 }
             
-            Text("Profile")
-                .tabItem {
-                    Label("Profile", systemImage: "person.circle.fill")
-                }
+            
         }
     }
 }

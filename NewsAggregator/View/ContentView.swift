@@ -25,14 +25,8 @@ struct ContentView: View {
                                 }
                             }) {
                                 Text(category.capitalized)
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                                    .padding(.vertical, 8)
-                                    .padding(.horizontal, 12)
-                                    .background(viewModel.selectedCategory == category ? Color.blue : Color.gray.opacity(0.2))
-                                    .foregroundColor(viewModel.selectedCategory == category ? .white : .primary)
-                                    .cornerRadius(16)
                             }
+                            .modifier(ButtonSmallModifier())
                         }
                     }
                     .padding(.horizontal)
@@ -61,11 +55,11 @@ struct ContentView: View {
                         }
                     case .failed(let error):
                         VStack {
-                            Text("Erro ao carregar notícias: \(viewModel.errorMessage ?? error.localizedDescription)")
+                            Text("Error loading news: \(viewModel.errorMessage ?? error.localizedDescription)")
                                 .foregroundColor(.red)
                                 .multilineTextAlignment(.center)
                                 .padding()
-                            Button("Tentar Novamente") {
+                            Button("Try again") {
                                 Task {
                                     await viewModel.fetchArticles()
                                 }
@@ -76,6 +70,7 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("News Aggregator")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 if case .idle = viewModel.loadingState {
                     Task {

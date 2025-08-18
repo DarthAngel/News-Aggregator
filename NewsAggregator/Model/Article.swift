@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Article: Codable, Identifiable {
+final class Article: Codable, Identifiable, Sendable {
     
     enum CodingKeys: String, CodingKey {
         case id = "id"

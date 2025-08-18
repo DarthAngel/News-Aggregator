@@ -2,34 +2,14 @@
 //  NewsAggregatorTests.swift
 //  NewsAggregatorTests
 //
-//  Created by Angel Docampo on 17/8/25.
+//  Created by Angel Docampo on 18/8/25.
 //
 
 import XCTest
 @testable import NewsAggregator
 
-class MockNetworkService: NetworkServiceProtocol {
-    var mockData: Data?
-    var mockResponse: URLResponse?
-    var mockError: Error?
-    var lastRequestedURL: URL?
-    
-    func fetchData(from url: URL) async throws -> (Data, URLResponse) {
-        lastRequestedURL = url
-        
-        if let error = mockError {
-            throw error
-        }
-        
-        guard let data = mockData, let response = mockResponse else {
-            throw NSError(domain: "MockNetworkService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Mock data or response not set"])
-        }
-        
-        return (data, response)
-    }
-}
 
-class NewsServiceTests: XCTestCase {
+final class NewsServiceTests: XCTestCase {
     
     var newsService: NewsServiceProtocol!
     var mockNetworkService: MockNetworkService!
@@ -150,6 +130,7 @@ class NewsServiceTests: XCTestCase {
     
     func testFetchTopHeadlines_InvalidResponse() async {
         // Given
+        
         mockNetworkService.mockData = Data()
         mockNetworkService.mockResponse = HTTPURLResponse(
             url: URL(string: "https://example.com")!,
@@ -159,17 +140,18 @@ class NewsServiceTests: XCTestCase {
         )
         
         // When/Then
-        do {
-            _ = try await newsService.fetchTopHeadlines(category: "", query: "", country: "")
-            XCTFail("Expected to throw invalidResponse error")
-            
-        } catch NetworkError.invalidResponse {
-            // Success
-            print("Network error is: NetworkError.invalidResponse \n")
-        } catch {
-            print("Network error is: \(error.localizedDescription) \n")
-            XCTFail("Unexpected error: \(error.localizedDescription)")
-        }
+              do {
+                  _ = try await newsService.fetchTopHeadlines(category: "", query: "", country: "")
+                  XCTFail("Expected to throw invalidResponse error")
+              } catch {
+                  switch error as? NetworkError {
+                  case .requestFailed(NewsAggregator.NetworkError.invalidResponse):
+                      print("SUCCESS!!!!!")
+                  default:
+                      XCTFail("Unexpected error: \(error)")
+                  }
+                 
+              }
     }
     
     func testFetchTopHeadlines_DecodingError() async {

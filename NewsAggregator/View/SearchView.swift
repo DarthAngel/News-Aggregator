@@ -19,7 +19,7 @@ struct SearchView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
                     .padding(.horizontal)
-                    .onChange(of: viewModel.searchQuery) { newQuery in
+                    .onChange(of: viewModel.searchQuery) { oldQuerry, newQuery in
                         Task {
                             try await Task.sleep(nanoseconds: 500_000_000)
                             await viewModel.fetchArticles(for: newQuery)
