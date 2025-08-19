@@ -58,7 +58,7 @@ struct ArticleRowView: View {
                         viewModel.toggleSavedState()
                         isSaved.toggle()
                     } label: {
-                        Image(systemName: isSaved ? "star.fill" : "star")
+                        Image(systemName: isSaved ? "heart.fill" : "heart")
                             .foregroundColor(.blue)
                     }
                     .buttonStyle(.plain)

@@ -18,7 +18,7 @@ struct SavedArticlesView: View {
         NavigationView {
             VStack {
                 if savedArticles.isEmpty {
-                    ContentUnavailableView("No news saved", systemImage: "star.slash")
+                    ContentUnavailableView("No news saved", systemImage: "heart.slash")
                 } else {
                     List(savedArticles) { article in
                         ArticleRowWrapperView(viewModel: ArticleRowViewModel(article: article, modelContext: modelContext))

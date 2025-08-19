@@ -13,7 +13,7 @@ class NewsService: NewsServiceProtocol {
     private let baseUrl: String
     private let networkService: NetworkServiceProtocol
     
-    init(apiKey: String = APIConfig.newsAPIKey,
+    init(apiKey: String = URLConfig.newsAPIKey,
          baseUrl: String = "https://newsapi.org/v2/top-headlines",
          networkService: NetworkServiceProtocol = URLSession.shared) {
         self.apiKey = apiKey
